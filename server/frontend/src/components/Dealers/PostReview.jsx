@@ -21,47 +21,103 @@ const PostReview = () => {
   let review_url = root_url+`djangoapp/add_review`;
   let carmodels_url = root_url+`djangoapp/get_cars`;
 
-  const postreview = async ()=>{
-    let name = sessionStorage.getItem("firstname")+" "+sessionStorage.getItem("lastname");
-    //If the first and second name are stores as null, use the username
-    if(name.includes("null")) {
-      name = sessionStorage.getItem("username");
-    }
-    if(!model || review === "" || date === "" || year === "" || model === "") {
-      alert("All details are mandatory")
-      return;
-    }
+  const postreview = async () => {
+  let name = sessionStorage.getItem("firstname") + " " + sessionStorage.getItem("lastname");
+  // If the first and second name are stored as null, use the username
+  if (name.includes("null")) {
+    name = sessionStorage.getItem("username");
+  }
+  if (!model || review === "" || date === "" || year === "" || model === "") {
+    alert("All details are mandatory");
+    return;
+  }
 
-    let model_split = model.split(" ");
-    let make_chosen = model_split[0];
-    let model_chosen = model_split[1];
+  let model_split = model.split(" ");
+  let make_chosen = model_split[0];
+  let model_chosen = model_split[1];
 
-    let jsoninput = JSON.stringify({
-      "name": name,
-      "dealership": id,
-      "review": review,
-      "purchase": true,
-      "purchase_date": date,
-      "car_make": make_chosen,
-      "car_model": model_chosen,
-      "car_year": year,
-    });
+  let jsoninput = JSON.stringify({
+    "name": name,
+    "dealership": id,
+    "review": review,
+    "purchase": true,
+    "purchase_date": date,
+    "car_make": make_chosen,
+    "car_model": model_chosen,
+    "car_year": year,
+  });
 
-    console.log(jsoninput);
+  console.log("Sending data:", jsoninput);
+  
+  try {
     const res = await fetch(review_url, {
       method: "POST",
       headers: {
-          "Content-Type": "application/json",
+        "Content-Type": "application/json",
       },
       body: jsoninput,
-  });
+    });
 
-  const json = await res.json();
-  if (json.status === 200) {
-      window.location.href = window.location.origin+"/dealer/"+id;
-  }
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
 
+    const json = await res.json();
+    console.log("Response data:", json);
+
+    if (json.status === 200) {
+      window.location.href = `${window.location.origin}/dealer/${id}`;
+    } else {
+      console.error("Error posting review:", json.message);
+    }
+  } catch (error) {
+    console.error("Network or server error:", error);
+    alert("Failed to post review. Please try again later.");
   }
+}
+
+
+//   const postreview = async ()=>{
+//     let name = sessionStorage.getItem("firstname")+" "+sessionStorage.getItem("lastname");
+//     //If the first and second name are stores as null, use the username
+//     if(name.includes("null")) {
+//       name = sessionStorage.getItem("username");
+//     }
+//     if(!model || review === "" || date === "" || year === "" || model === "") {
+//       alert("All details are mandatory")
+//       return;
+//     }
+
+//     let model_split = model.split(" ");
+//     let make_chosen = model_split[0];
+//     let model_chosen = model_split[1];
+
+//     let jsoninput = JSON.stringify({
+//       "name": name,
+//       "dealership": id,
+//       "review": review,
+//       "purchase": true,
+//       "purchase_date": date,
+//       "car_make": make_chosen,
+//       "car_model": model_chosen,
+//       "car_year": year,
+//     });
+
+//     console.log(jsoninput);
+//     const res = await fetch(review_url, {
+//       method: "POST",
+//       headers: {
+//           "Content-Type": "application/json",
+//       },
+//       body: jsoninput,
+//   });
+
+//   const json = await res.json();
+//   if (json.status === 200) {
+//       window.location.href = window.location.origin+"/dealer/"+id;
+//   }
+
+//   }
   const get_dealer = async ()=>{
     const res = await fetch(dealer_url, {
       method: "GET"
