@@ -1,7 +1,7 @@
 table{
     margin:5px;
     padding:10px;
-    border: grey solid 1px;
+    border: plum solid 1px;
     width:100%
   }
   
@@ -58,8 +58,9 @@ table{
   .reviewer {
     margin: 10px; /* Optional margin for spacing */
     font-style: italic;
-    color: gray;
-    font-size: small;
+    color: plum;
+    font-size: 18px;
+    text-align: center;
 }
 
 .review {
@@ -84,5 +85,5 @@ table{
 
 .review_icon:hover {
   transform: scale(1.1);
-  border: solid lightgray;
+  border: solid plum;
 }
