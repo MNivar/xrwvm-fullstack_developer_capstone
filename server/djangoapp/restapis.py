@@ -14,6 +14,7 @@ searchcars_url = os.getenv(
     'searchcars_url',
     default="http://localhost:3050/")
 
+
 def get_request(endpoint, **kwargs):
     params = ""
     if (kwargs):
@@ -32,6 +33,7 @@ def get_request(endpoint, **kwargs):
         print(f"Error: {e}")
         print("Network exception occurred")
 
+
 def searchcars_request(endpoint, **kwargs):
     params = ""
     if (kwargs):
@@ -48,7 +50,8 @@ def searchcars_request(endpoint, **kwargs):
         # If any error occurs
         print(f"Error: {e}")
         print("Network exception occurred")
-    
+
+
 def analyze_review_sentiments(text):
     request_url = sentiment_analyzer_url + "analyze/" + text
     try:
@@ -95,7 +98,3 @@ def post_review(data_dict):
     except requests.RequestException as e:
         print(f"Network exception occurred: {e}")
         return {"status": 500, "message": "Internal server error"}
-
-
-
-
